@@ -41,7 +41,7 @@ function Header() {
                 direction="row"
                 justifyContent="flex-end"
                 alignItems="center"
-                spacing={1}
+                spacing={2}
                 sx={{ height: "100%" }}
               >
                 <IconLink text="Login" icon={<FiUser />} />
@@ -55,7 +55,6 @@ function Header() {
                   sx={{
                     "& .MuiBadge-badge": {
                       left: "24px",
-                      top: "6px",
                       color: (theme) => theme.palette.common.white,
                       fontSize: "0.7em",
                     },

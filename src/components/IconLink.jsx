@@ -8,6 +8,7 @@ function IconLink(props) {
         color="secondary"
         startIcon={props.icon}
         sx={[
+          { p: 0 },
           (theme) => ({
             "&:hover": {
               backgroundColor: "transparent",
