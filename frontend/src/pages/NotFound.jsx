@@ -5,8 +5,8 @@ function NotFound() {
   return (
     <Box
       sx={{
+        height: (theme) => theme.page.minHeight,
         display: "flex",
-        minHeight: "65vh",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",

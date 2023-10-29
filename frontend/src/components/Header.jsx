@@ -30,7 +30,7 @@ function Header() {
                       maxWidth: 180,
                       width: "100%",
                     }}
-                    alt="logo"
+                    alt="Logo"
                     src={Logo}
                   />
                 </Link>
@@ -44,7 +44,7 @@ function Header() {
                 spacing={2}
                 sx={{ height: "100%" }}
               >
-                <IconLink text="Login" icon={<FiUser />} />
+                <IconLink text="Login" icon={<FiUser />} to="/login" />
                 <Badge
                   badgeContent={3}
                   color="primary"

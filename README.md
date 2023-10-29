@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# Thrift shop with MERN
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is based on Mern Stack (Node.js / Express.js / MongoDb / React.js ) with Material UI
 
-## Available Scripts
+## Getting started
 
-In the project directory, you can run:
+#### Step 1: Clone the repository
 
-### `npm start`
+#### Step 2: Create Your MongoDB Account and Database/Cluster
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+#### Step 3: Create the Environment File
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Create a file named .env in the /backend directory.
+- Copy and paste all the variables from tmp.env
 
-### `npm test`
+#### Step 4: Update MongoDB URI
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+In the .env file, find the line that reads:
 
-### `npm run build`
+`DATABASE="mongodb-url"`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Replace "mongodb-url" with the actual URI of your MongoDB database.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Step 5: Install Backend Dependencies
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+In your terminal, navigate to the /backend directory of the project and run the following command to install the backend dependencies:
 
-### `npm run eject`
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### Step 6: Run the Backend Server
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+In the same terminal, run the following command to start the backend server:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm run start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### Step 7: Install Frontend Dependencies
 
-## Learn More
+Open a new terminal window , and run the following command to install the frontend dependencies:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+cd frontend
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm install
+```
 
-### Code Splitting
+#### Step 8: Run the Frontend Server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+After installing the frontend dependencies, run the following command in the same terminal to start the frontend server:
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+npm run start
+```
