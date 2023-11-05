@@ -9,6 +9,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import Logo from "../assets/images/logo.png";
 import { FiPhone, FiMail, FiFacebook, FiInstagram } from "react-icons/fi";
 import FooterLinkList from "./FooterLinkList";
@@ -88,6 +89,7 @@ const linkListPolicies = [
 ];
 
 function Footer() {
+  const theme = useTheme();
   const date = new Date();
 
   return (
@@ -130,10 +132,10 @@ function Footer() {
               </Box>
               <Box sx={{ mt: 3 }}>
                 <FilledIconButton href="/">
-                  <FiFacebook color="#fff" size="18" />
+                  <FiFacebook color={theme.palette.white.main} size="18" />
                 </FilledIconButton>
                 <FilledIconButton size="large" styles={{ ml: 1 }} href="/">
-                  <FiInstagram color="#fff" size="18" />
+                  <FiInstagram color={theme.palette.white.main} size="18" />
                 </FilledIconButton>
               </Box>
             </Grid>

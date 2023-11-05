@@ -26,7 +26,7 @@ function ItemCarousel(props) {
             />
             <Box
               component={Link}
-              to={`category/${item.slug}`}
+              to={`/${item.to}`}
               sx={{
                 display: "block",
                 width: "100%",

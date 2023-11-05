@@ -59,6 +59,7 @@ const theme = createTheme({
       }
     },
     shadows: {
+      4: "0 0.5rem 1rem rgba(0, 0, 0, 0.15)",
       6: "0 0.5rem 1rem rgba(0, 0, 0, 0.15)"
     },
     components: {

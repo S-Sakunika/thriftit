@@ -7,7 +7,6 @@ function InputText({ ...props }) {
   return (
     <>
       <TextField
-        autocomplete="off"
         fullWidth
         margin="normal"
         variant="outlined"
