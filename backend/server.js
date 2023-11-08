@@ -3,6 +3,8 @@ const bodyParser = require("body-parser")
 const cors = require("cors")
 const connectDatabase = require('./config/database')
 
+const userRoute = require('./routes/userApi') 
+
 require('dotenv').config()
 connectDatabase(process.env.DATABASE)
 
@@ -15,3 +17,5 @@ app.use(bodyParser.json())
 app.listen(port, () => {
     console.log('Server running')
 })
+
+app.use('/api/user', userRoute)

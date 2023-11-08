@@ -1,8 +1,8 @@
 import { Button, Link, Box } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import InputText from "./form-controls/InputText";
-import InputPassword from "./form-controls/InputPassword";
+import InputText from "../form-controls/InputText";
+import InputPassword from "../form-controls/InputPassword";
 import { Link as RouterLink } from "react-router-dom";
 
 const LoginSchema = Yup.object().shape({

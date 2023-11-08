@@ -12,15 +12,13 @@ function ShopPage() {
     "accessories",
     "shirts",
   ];
-  const isValidCategory = (category) => {
-    return allCategories.includes(category);
-  };
+  const isValidCategory = (category) => allCategories.includes(category);
 
-  if (isValidCategory(parentCategory) && isValidCategory(childCategory)) {
-    return <Products />;
-  } else {
-    return <NotFound />;
-  }
+  return isValidCategory(parentCategory) && isValidCategory(childCategory) ? (
+    <Products />
+  ) : (
+    <NotFound />
+  );
 }
 
 export default ShopPage;

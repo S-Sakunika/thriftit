@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import Home from "./Home";
 import ShopPage from "./ShopPage";
-import Login from "./Login";
+import Auth from "./Auth";
 import NotFound from "./NotFound";
 
 function Page() {
@@ -18,7 +18,8 @@ function Page() {
             path="/:parentCategory/:childCategory"
             element={<ShopPage />}
           />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Auth />} />
+          <Route path="/register" element={<Auth />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Container>
