@@ -1,10 +1,17 @@
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { Box, Button, alpha } from "@mui/material";
 import { Link } from "react-router-dom";
-import "../assets/sass/item-carousel.scss";
 
-function ItemCarousel(props) {
+function CategoryCarousel(props) {
   const items = props.items;
+  const categoryImage = (image) => {
+    try {
+      return require(`../assets/images/categories/${image}`);
+    } catch (e) {
+      return require("../assets/images/placeholder.jpg");
+    }
+  };
+
   return (
     <Splide
       options={{
@@ -21,12 +28,12 @@ function ItemCarousel(props) {
           <SplideSlide key={index}>
             <Box
               component="img"
-              src={require(`../assets/images/categories/${item.filename}`)}
+              src={categoryImage(item.imageFileName)}
               alt={item.name}
             />
             <Box
               component={Link}
-              to={`/${item.to}`}
+              to={`/${item.slug}`}
               sx={{
                 display: "block",
                 width: "100%",
@@ -61,4 +68,4 @@ function ItemCarousel(props) {
   );
 }
 
-export default ItemCarousel;
+export default CategoryCarousel;

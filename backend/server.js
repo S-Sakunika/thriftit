@@ -4,6 +4,8 @@ const cors = require("cors")
 const connectDatabase = require('./config/database')
 
 const userRoute = require('./routes/userApi') 
+const authRoute = require('./routes/authApi')
+const categoryRoute = require('./routes/categoryApi')
 
 require('dotenv').config()
 connectDatabase(process.env.DATABASE)
@@ -19,3 +21,5 @@ app.listen(port, () => {
 })
 
 app.use('/api/user', userRoute)
+app.use('/api/auth', authRoute)
+app.use('/api/category', categoryRoute)

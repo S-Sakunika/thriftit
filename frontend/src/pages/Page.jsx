@@ -4,6 +4,7 @@ import Breadcrumbs from "../components/Breadcrumbs";
 import Home from "./Home";
 import ShopPage from "./ShopPage";
 import Auth from "./Auth";
+import Cart from "./Cart";
 import NotFound from "./NotFound";
 
 function Page() {
@@ -18,6 +19,11 @@ function Page() {
             path="/:parentCategory/:childCategory"
             element={<ShopPage />}
           />
+          <Route
+            path="/:parentCategory/:childCategory/:product"
+            element={<ShopPage />}
+          />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Auth />} />
           <Route path="/register" element={<Auth />} />
           <Route path="*" element={<NotFound />} />

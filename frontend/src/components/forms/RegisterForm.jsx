@@ -1,26 +1,19 @@
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+import { RegisterSchema } from "../../schemas";
 import InputText from "../form-controls/InputText";
 import InputPassword from "../form-controls/InputPassword";
 import InputRadioGroup from "../form-controls/InputRadioGroup";
 import { Button, Box, Link, Grid } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import axios from "axios";
+import useHttpRequest from "../../hooks/useHttpRequest";
+// import axios from "axios";
+// import { useNotificationContext } from "../../context/NotificationContext";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-const RegisterSchema = Yup.object().shape({
-  firstName: Yup.string().required("First name required"),
-  lastName: Yup.string().required("Last name required"),
-  email: Yup.string().email("Invalid email").required("Last name required"),
-  password: Yup.string()
-    .min(8, "Must be minimum 8 characters")
-    .required("Password required"),
-  confirmPassword: Yup.string()
-    .required("Conform password required")
-    .oneOf([Yup.ref("password"), null], "Passwords must match"),
-});
 function RegisterFrom() {
+  // const { setNotifications } = useNotificationContext();
+  const { post } = useHttpRequest();
   return (
     <>
       <Formik
@@ -33,18 +26,8 @@ function RegisterFrom() {
           confirmPassword: "",
         }}
         validationSchema={RegisterSchema}
-        onSubmit={async (values, actions) => {
-          try {
-            await axios
-              .post(`${API_BASE_URL}user/create`, values)
-              .then((res) => {
-                console.log(res);
-                actions.setSubmitting(false);
-                actions.resetForm();
-              });
-          } catch (e) {
-            console.log(e.response.data.message);
-          }
+        onSubmit={(values, actions) => {
+          post("user/create", values, actions);
         }}
       >
         {(props) => (
@@ -79,6 +62,7 @@ function RegisterFrom() {
               type="submit"
               size="large"
               sx={{ mt: 4, mx: "auto", display: "block" }}
+              disabled={props.isSubmitting}
             >
               Register
             </Button>

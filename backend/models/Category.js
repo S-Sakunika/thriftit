@@ -11,8 +11,7 @@ const categorySchema = new mongoose.Schema({
     },
     imageFileName: {
         type: String,
-        trim: true,
-        unique: true
+        trim: true
     },
     slug: {
         type: String,

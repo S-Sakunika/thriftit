@@ -1,13 +1,37 @@
+import { useEffect, useState } from "react";
 import { Box, Grid, Typography, Button } from "@mui/material";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import AnimatedText from "../components/AnimatedText";
-import ItemCarousel from "../components/ItemCarousel";
+import CategoryCarousel from "../components/CategoryCarousel";
 import IconCard from "../components/IconCard";
 import { FiTruck, FiLock, FiUsers } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import "../assets/sass/splide-carousel.scss";
+import useHttpRequest from "../hooks/useHttpRequest";
 
 function Home() {
+  const { get } = useHttpRequest();
+  const [womensCategories, setwomensCategories] = useState([]);
+  const [mensCategories, setmensCategories] = useState([]);
+
+  const getCategories = async (categorySlug) => {
+    await get(`category/${categorySlug}`)
+      .then((res) => {
+        categorySlug === "womens"
+          ? setwomensCategories(res.data.result)
+          : setmensCategories(res.data.result);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    getCategories("womens");
+    getCategories("mens");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const bannerImages = [
     {
       filename: "banner-1.jpg",
@@ -36,96 +60,6 @@ function Home() {
     {
       filename: "banner-7.jpg",
       alt: "Banner",
-    },
-  ];
-
-  const womensCategories = [
-    {
-      id: "1",
-      name: "Dresses",
-      to: "womens/dresses",
-      filename: "dresses.jpg",
-    },
-    {
-      id: "2",
-      name: "Tops",
-      to: "womens/tops",
-      filename: "tops.jpg",
-    },
-    {
-      id: "3",
-      name: "Pants",
-      to: "womens/pants",
-      filename: "pants.jpg",
-    },
-    {
-      id: "4",
-      name: "Skirts",
-      to: "womens/skirts",
-      filename: "skirts.jpg",
-    },
-    {
-      id: "5",
-      name: "Accessories",
-      to: "womens/accessories",
-      filename: "accessories.jpg",
-    },
-    {
-      id: "6",
-      name: "Bags",
-      to: "womens/bags",
-      filename: "bags.jpg",
-    },
-    {
-      id: "7",
-      name: "Shoes",
-      to: "womens/shoes",
-      filename: "shoes.jpg",
-    },
-  ];
-
-  const mensCategories = [
-    {
-      id: "1",
-      name: "Shirts",
-      to: "mens/shirts",
-      filename: "shirts.jpg",
-    },
-    {
-      id: "2",
-      name: "T-shirts",
-      to: "mens/tshirts",
-      filename: "tshirts.jpg",
-    },
-    {
-      id: "3",
-      name: "Trousers",
-      to: "mens/trousers",
-      filename: "trousers.jpg",
-    },
-    {
-      id: "4",
-      name: "Jackets",
-      to: "mens/jackets",
-      filename: "jackets.jpg",
-    },
-    {
-      id: "5",
-      name: "Shorts",
-      to: "mens/shorts",
-      filename: "shorts.jpg",
-    },
-    {
-      id: "6",
-      name: "Accessories",
-      to: "mens/accessories",
-      filename: "mens-accessories.jpg",
-    },
-    {
-      id: "7",
-      name: "Shoes",
-      to: "mens/shoes",
-      filename: "mens-shoes.jpg",
     },
   ];
 
@@ -204,7 +138,7 @@ function Home() {
           />
           <Box component="span"> Categories</Box>
         </Typography>
-        <ItemCarousel items={womensCategories} />
+        <CategoryCarousel items={womensCategories} />
       </Box>
 
       <Box sx={{ mt: 6 }}>
@@ -216,7 +150,7 @@ function Home() {
           />
           <Box component="span"> Categories</Box>
         </Typography>
-        <ItemCarousel items={mensCategories} />
+        <CategoryCarousel items={mensCategories} />
       </Box>
 
       <Box sx={{ mt: 10 }}>

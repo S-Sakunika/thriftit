@@ -3,8 +3,10 @@ import { FiSearch, FiUser, FiShoppingCart } from "react-icons/fi";
 import IconLink from "./IconLink";
 import Logo from "../assets/images/logo.png";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
 
 function Header() {
+  const { isLoggedIn } = useAuthContext();
   return (
     <AppBar position="fixed" color="white" sx={{ py: 1, boxShadow: "none" }}>
       <Container>
@@ -44,7 +46,11 @@ function Header() {
                 spacing={2}
                 sx={{ height: "100%" }}
               >
-                <IconLink text="Login" icon={<FiUser />} to="/login" />
+                <IconLink
+                  text={isLoggedIn ? "My Account" : "Login"}
+                  icon={<FiUser />}
+                  to={isLoggedIn ? "/login" : "/my-account"}
+                />
                 <Badge
                   badgeContent={3}
                   color="primary"
@@ -60,7 +66,7 @@ function Header() {
                     },
                   }}
                 >
-                  <IconLink text="Cart" icon={<FiShoppingCart />} />
+                  <IconLink text="Cart" icon={<FiShoppingCart />} to="/cart" />
                 </Badge>
               </Stack>
             </Grid>

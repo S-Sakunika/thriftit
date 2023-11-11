@@ -1,27 +1,19 @@
 import { Button, Link, Box } from "@mui/material";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+import { LoginSchema } from "../../schemas";
 import InputText from "../form-controls/InputText";
 import InputPassword from "../form-controls/InputPassword";
 import { Link as RouterLink } from "react-router-dom";
-
-const LoginSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email required"),
-  password: Yup.string().required("Password required"),
-});
+import { useAuthContext } from "../../context/AuthContext";
 
 function LoginForm() {
+  const { login } = useAuthContext();
   return (
     <>
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={LoginSchema}
-        onSubmit={(values, actions) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            actions.setSubmitting(false);
-          }, 1000);
-        }}
+        onSubmit={(values, actions) => login(values, actions)}
       >
         {(props) => (
           <Form>
@@ -34,6 +26,7 @@ function LoginForm() {
               type="submit"
               size="large"
               sx={{ mt: 4, mx: "auto", display: "block" }}
+              disabled={props.isSubmitting}
             >
               Login
             </Button>

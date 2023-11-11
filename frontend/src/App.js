@@ -4,8 +4,11 @@ import ScrollToTop from "./components/ScrollToTop"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import Page from "./pages/Page"
+import Notification from "./components/Notification"
+import {useNotificationContext} from './context/NotificationContext'
 
 function App() {
+  const {notifications} = useNotificationContext()
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -14,6 +17,7 @@ function App() {
         <Header />
         <Page />
         <Footer />
+        <Notification notifications={notifications}/>
       </div>
     </ThemeProvider>
   );
