@@ -22,7 +22,16 @@ function Cart() {
       <Stack spacing={2}>
         {cartItems.map((item, i) => {
           return (
-            <Box key={i}>
+            <Box
+              key={i}
+              sx={{
+                backgroundColor: (theme) =>
+                  alpha(theme.palette.secondary.main, 0.03),
+                py: 1,
+                px: 2,
+                borderRadius: "1em",
+              }}
+            >
               <Grid container spacing={3}>
                 <Grid item xs={12} md={2}>
                   <Box
@@ -74,7 +83,7 @@ function Cart() {
         justifyContent="space-between"
         alignItems="center"
         sx={{
-          mt: 8,
+          mt: 6,
         }}
       >
         <Box>
@@ -92,7 +101,7 @@ function Cart() {
             variant="contained"
             sx={{ ml: 1, minWidth: "180px" }}
             component={Link}
-            to="/"
+            to="/checkout"
           >
             Checkout
           </Button>

@@ -1,14 +1,16 @@
 import axios from "axios";
 import { useNotificationContext } from "../context/NotificationContext";
+import { useNavigate } from "react-router-dom";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const useHttpRequest = () => {
     const { setNotifications } = useNotificationContext();
-    const token = localStorage.getItem('jwtToken')
+    const token = localStorage.getItem('auth_token')
+    const navigate = useNavigate()
 
     axios.defaults.headers.common["Authentication"] = `Bearer ${token}`
 
-    const post = async (url, data = null, actions = null) => {
+    const post = async (url, data = null, actions = null, redirectToLogin) => {
       try {
         const res = await axios.post(`${API_BASE_URL}${url}`, data)
           
@@ -30,19 +32,30 @@ const useHttpRequest = () => {
           messages: e.response.data.message,
         });
         actions.setSubmitting(false);
-        return e
+
+        handleError(e, navigate, redirectToLogin)
+        throw e
       }
     }
 
-    const get = async (url) => {
+    const get = async (url, redirectToLogin) => {
       try {
         return await axios.get(`${API_BASE_URL}${url}`)
       } catch (e) {
-        return e
+        handleError(e, navigate, redirectToLogin)
+        throw e
       }
     }
 
     return { post, get }
+}
+
+const handleError = (e, navigate, redirectToLogin = true) => {
+  if(e.response.status === 403) {
+    localStorage.removeItem('auth_token') 
+    if(redirectToLogin) navigate('/login')
+  } 
+  return e
 }
 
 export default useHttpRequest

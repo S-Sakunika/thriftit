@@ -18,7 +18,8 @@ const authenticate = async (req, res, next) => {
         if(!user) {
             return res.status(401).json({ result: null, message: 'User not found' })
         }
-
+        
+        req.user = user;
         next()
     } catch (e) {
         return res.status(403).json({ message: 'Invalid token' })

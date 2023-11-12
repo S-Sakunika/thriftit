@@ -17,4 +17,10 @@ const LoginSchema = Yup.object().shape({
     password: Yup.string().required("Password required"),
 });
 
-export { RegisterSchema, LoginSchema }
+const CheckoutSchema = Yup.object().shape({
+    firstName: Yup.string().required("First name required"),
+    lastName: Yup.string().required("Last name required"),
+    country: Yup.string().required("Country required"),
+});
+
+export { RegisterSchema, LoginSchema, CheckoutSchema }

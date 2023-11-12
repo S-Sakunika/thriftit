@@ -5,24 +5,34 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const { post } = useHttpRequest();
+  const { post, get } = useHttpRequest();
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const login = async (values, actions) => {
     await post("auth/login", values, actions)
       .then((res) => {
-        localStorage.setItem("jwtToken", res.data.token);
+        localStorage.setItem("auth_token", res.data.result.token);
         setIsLoggedIn(true);
         navigate("/");
       })
       .catch((e) => {
-        // console.log(e);
+        setIsLoggedIn(false);
+      });
+  };
+
+  const getUser = async (redirectToLogin) => {
+    await get("user", redirectToLogin)
+      .then((res) => {
+        setIsLoggedIn(true);
+      })
+      .catch((e) => {
+        setIsLoggedIn(false);
       });
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, login }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, login, getUser }}>
       {children}
     </AuthContext.Provider>
   );

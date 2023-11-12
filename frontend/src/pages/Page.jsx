@@ -6,6 +6,7 @@ import ShopPage from "./ShopPage";
 import Auth from "./Auth";
 import Cart from "./Cart";
 import NotFound from "./NotFound";
+import Checkout from "./Checkout";
 
 function Page() {
   const { pathname } = useLocation();
@@ -24,6 +25,7 @@ function Page() {
             element={<ShopPage />}
           />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<Auth />} />
           <Route path="/register" element={<Auth />} />
           <Route path="*" element={<NotFound />} />

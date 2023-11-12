@@ -6,13 +6,8 @@ import InputRadioGroup from "../form-controls/InputRadioGroup";
 import { Button, Box, Link, Grid } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import useHttpRequest from "../../hooks/useHttpRequest";
-// import axios from "axios";
-// import { useNotificationContext } from "../../context/NotificationContext";
-
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 function RegisterFrom() {
-  // const { setNotifications } = useNotificationContext();
   const { post } = useHttpRequest();
   return (
     <>
@@ -38,10 +33,7 @@ function RegisterFrom() {
                 customer: "I want to buy",
                 vendor: "I want to sell",
               }}
-              value={props.values.userRole}
-              onChange={(event) => {
-                props.setFieldValue("userRole", event.currentTarget.value);
-              }}
+              formikProps={props}
             />
 
             <Grid container spacing={2}>

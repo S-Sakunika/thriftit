@@ -1,7 +1,9 @@
 const create = require('./create');
+const getUser = require('./read')
 
 const userController = {
-  create
+  create,
+  getUser
 };
 
 module.exports = userController;
