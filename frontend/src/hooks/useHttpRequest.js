@@ -53,6 +53,7 @@ const useHttpRequest = () => {
 const handleError = (e, navigate, redirectToLogin = true) => {
   if(e.response.status === 403) {
     localStorage.removeItem('auth_token') 
+    localStorage.removeItem('user') 
     if(redirectToLogin) navigate('/login')
   } 
   return e

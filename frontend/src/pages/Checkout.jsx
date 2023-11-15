@@ -18,7 +18,7 @@ function Checkout() {
       initialValues={{
         firstName: "",
         lastName: "",
-        country: "bx",
+        country: "",
       }}
       validationSchema={CheckoutSchema}
       onSubmit={(values, actions) => {

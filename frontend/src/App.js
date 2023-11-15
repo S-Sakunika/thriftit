@@ -7,7 +7,7 @@ import Footer from "./components/Footer"
 import Page from "./pages/Page"
 import Notification from "./components/Notification"
 import { useNotificationContext } from './context/NotificationContext'
-import {useAuthContext } from './context/AuthContext'
+import { useAuthContext } from './context/AuthContext'
 
 function App() {
   const { notifications } = useNotificationContext()
@@ -15,6 +15,7 @@ function App() {
 
   useEffect(() => {
     getUser(false)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   })
 
   return (

@@ -7,6 +7,8 @@ import Auth from "./Auth";
 import Cart from "./Cart";
 import NotFound from "./NotFound";
 import Checkout from "./Checkout";
+import MyAccount from "./MyAccount";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 function Page() {
   const { pathname } = useLocation();
@@ -16,18 +18,23 @@ function Page() {
         {pathname !== "/" && <Breadcrumbs />}
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Auth />} />
+          <Route path="/register" element={<Auth />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/my-account/*" element={<MyAccount />} />
+            {/* <Route path="/my-account/my-items" element={<MyAccount />} /> */}
+            {/* <Route path="/my-account/:path1/:path2" element={<MyAccount />} /> */}
+          </Route>
           <Route
-            path="/:parentCategory/:childCategory"
+            path="category/:parentCategory/:childCategory"
             element={<ShopPage />}
           />
           <Route
-            path="/:parentCategory/:childCategory/:product"
+            path="category/:parentCategory/:childCategory/:product"
             element={<ShopPage />}
           />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/login" element={<Auth />} />
-          <Route path="/register" element={<Auth />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Container>

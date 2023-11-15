@@ -1,6 +1,7 @@
-const { getCategoriesByParent } = require('./read')
+const { getCategoriesByParent, getAllCategories } = require('./read')
 const categoryController = {
-    getCategoriesByParent
+    getCategoriesByParent,
+    getAllCategories
 }
 
 module.exports = categoryController

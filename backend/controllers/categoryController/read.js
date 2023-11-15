@@ -1,6 +1,35 @@
 const Category = require('../../models/Category')
 const handleError = require('../../utils/errorHandler')
 
+const getAllCategories = async (req, res) => {
+    try {
+        const categories = await Category.aggregate([
+            {
+              $lookup: {
+                from: 'categories',
+                localField: 'parentCategory',
+                foreignField: '_id',
+                as: 'parentCategory'
+              }
+            },
+            {
+              $unwind: {
+                path: '$parentCategory',
+                preserveNullAndEmptyArrays: true
+              }
+            },
+          ]);
+
+        res.status(200).json({
+            status: 'success',
+            result: categories,
+            message: 'Categories found'
+        })
+    } catch (e) {
+        handleError(res, e)
+    }
+}
+
 const getCategoriesByParent = async (req, res) => {
     try {
         const parentSlug = req.params.parentSlug;
@@ -34,4 +63,4 @@ const getCategoriesByParent = async (req, res) => {
     }
 }
 
-module.exports = { getCategoriesByParent }
+module.exports = { getCategoriesByParent, getAllCategories }

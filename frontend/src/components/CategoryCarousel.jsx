@@ -33,7 +33,7 @@ function CategoryCarousel(props) {
             />
             <Box
               component={Link}
-              to={`/${item.slug}`}
+              to={`/category/${item.slug}`}
               sx={{
                 display: "block",
                 width: "100%",

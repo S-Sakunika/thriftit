@@ -49,7 +49,7 @@ function Header() {
                 <IconLink
                   text={isLoggedIn ? "My Account" : "Login"}
                   icon={<FiUser />}
-                  to={isLoggedIn ? "/my-account" : "/login"}
+                  to={isLoggedIn ? "/my-account/profile" : "/login"}
                 />
                 <Badge
                   badgeContent={3}

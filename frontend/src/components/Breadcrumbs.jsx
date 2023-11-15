@@ -8,8 +8,10 @@ function Breadcrumbs() {
   const { pathname } = useLocation();
   const pathArr = pathname.split("/").filter((el) => el !== "");
 
-  const capitalized = (string) =>
-    string.charAt(0).toUpperCase() + string.slice(1);
+  const formatted = (string) => {
+    const sanitized = string.replace("-", " ");
+    return sanitized.charAt(0).toUpperCase() + sanitized.slice(1);
+  };
 
   const crumbs = [
     <Link key="1" component={RouterLink} to="/">
@@ -27,11 +29,11 @@ function Breadcrumbs() {
             color="secondary"
             underline="none"
           >
-            {capitalized(item)}
+            {formatted(item)}
           </Link>
         );
       } else {
-        return <Typography key={i}>{capitalized(item)}</Typography>;
+        return <Typography key={i}>{formatted(item)}</Typography>;
       }
     })
   );

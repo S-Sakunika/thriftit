@@ -4,11 +4,13 @@ import InputText from "../form-controls/InputText";
 import InputPassword from "../form-controls/InputPassword";
 import InputRadioGroup from "../form-controls/InputRadioGroup";
 import { Button, Box, Link, Grid } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import useHttpRequest from "../../hooks/useHttpRequest";
 
 function RegisterFrom() {
   const { post } = useHttpRequest();
+  const navigate = useNavigate();
+
   return (
     <>
       <Formik
@@ -21,8 +23,14 @@ function RegisterFrom() {
           confirmPassword: "",
         }}
         validationSchema={RegisterSchema}
-        onSubmit={(values, actions) => {
-          post("user/create", values, actions);
+        onSubmit={async (values, actions) => {
+          await post("user/create", values, actions)
+            .then((res) => {
+              navigate("/login");
+            })
+            .catch((e) => {
+              // console.log(e)
+            });
         }}
       >
         {(props) => (

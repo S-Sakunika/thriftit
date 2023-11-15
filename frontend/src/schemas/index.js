@@ -17,10 +17,17 @@ const LoginSchema = Yup.object().shape({
     password: Yup.string().required("Password required"),
 });
 
+const ItemSchema = Yup.object().shape({
+    category: Yup.string().required("Category required"),
+    name: Yup.string().required("Name required"),
+    condition: Yup.string().required("Condition required"),
+    price: Yup.number().positive("Must be more than 0").required("Price required"),
+});
+
 const CheckoutSchema = Yup.object().shape({
     firstName: Yup.string().required("First name required"),
     lastName: Yup.string().required("Last name required"),
     country: Yup.string().required("Country required"),
 });
 
-export { RegisterSchema, LoginSchema, CheckoutSchema }
+export { RegisterSchema, LoginSchema, ItemSchema, CheckoutSchema }
