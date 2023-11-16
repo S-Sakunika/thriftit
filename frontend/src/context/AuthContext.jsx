@@ -29,7 +29,7 @@ const AuthProvider = ({ children }) => {
             role: result.user.role,
           })
         );
-        navigate("/");
+        navigate("/my-account/profile");
       })
       .catch((e) => {});
   };

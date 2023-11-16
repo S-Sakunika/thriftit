@@ -2,9 +2,9 @@ const Product = require('../../models/Product')
 const handleError = require('../../utils/errorHandler')
 const { slugify, isUniqueSlug, generateUniqueSlug } = require('../../utils/slugHandler')
 
-const create = async (req, res) => {
+const update = async (req, res) => {
     try {
-
+        const id = req.params.id
         const { name } = req.body;
 
         let slug = slugify(name);
@@ -24,22 +24,24 @@ const create = async (req, res) => {
             },
             price: req.body.price,
             description: req.body.description,
-            vendor: req.body.vendor,
             image: req.file.filename,
-            qty: '1',
             slug: slug
         }
 
-        const product = new Product(productData)
-        const result = await product.save()
+        const result = await Product.findByIdAndUpdate(
+            id,
+            { $set: productData },
+            { new: true }
+          );
 
         res.status(200).json({
             status: 'success',
             result: result,
-            message: 'Item saved'
+            message: 'Item updated'
         })
     } catch (e) {
         handleError(res, e)
     }
 }
-module.exports = create
+
+module.exports = update

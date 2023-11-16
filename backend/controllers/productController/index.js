@@ -1,10 +1,16 @@
 const create = require('./create');
-const { getProductsByVendor, getProductById } = require('./read');
+const update = require('./update');
+const remove = require('./remove');
+const { getProductsByVendor, getProductsByCategory, getProductById, getProductBySlug } = require('./read');
 
 const productController = {
   create,
+  update,
   getProductsByVendor,
-  getProductById
+  getProductsByCategory,
+  getProductById,
+  getProductBySlug,
+  remove
 };
 
 module.exports = productController;

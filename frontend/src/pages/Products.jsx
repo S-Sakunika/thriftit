@@ -1,101 +1,35 @@
-// import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Grid, Typography, Box, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FiShoppingCart } from "react-icons/fi";
+import useHttpRequest from "../hooks/useHttpRequest";
+const UPLOAD_BASE_URL = process.env.REACT_APP_UPLOAD_BASE_URL;
 
 function Products() {
-  // const { category } = useParams();
+  const { childCategory } = useParams();
+  const { get } = useHttpRequest();
+  const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState({});
 
-  const products = [
-    {
-      id: 1,
-      name: "Elegant Black Evening Dress",
-      slug: "elegant-black-evening-dress",
-      price: 129.99,
-      imageFileName: "dresses.jpg",
-    },
-    {
-      id: 2,
-      name: "Summer Floral Maxi Dress",
-      slug: "summer-floral-maxi-dress",
-      price: 79.99,
-      imageFileName: "dresses.jpg",
-    },
-    {
-      id: 3,
-      name: "Vintage Lace Wedding Dress",
-      slug: "vintage-lace-wedding-dress",
-      price: 199.99,
-      imageFileName: "dresses.jpg",
-    },
-    {
-      id: 4,
-      name: "Casual Striped Shirt Dress",
-      slug: "casual-striped-shirt-dress",
-      price: 59.99,
-      imageFileName: "dresses.jpg",
-    },
-    {
-      id: 5,
-      name: "Boho Chic Sundress",
-      slug: "boho-chic-sundress",
-      price: 49.99,
-      imageFileName: "dresses.jpg",
-    },
-    {
-      id: 6,
-      name: "Formal Red Cocktail Dress",
-      slug: "formal-red-cocktail-dress",
-      price: 149.99,
-      imageFileName: "dresses.jpg",
-    },
-    {
-      id: 7,
-      name: "Classic Little Black Dress",
-      slug: "classic-little-black-dress",
-      price: 89.99,
-      imageFileName: "dresses.jpg",
-    },
-    {
-      id: 8,
-      name: "Retro Polka Dot Swing Dress",
-      slug: "retro-polka-dot-swing-dress",
-      price: 69.99,
-      imageFileName: "dresses.jpg",
-    },
-    {
-      id: 9,
-      name: "Chiffon Beach Cover-Up Dress",
-      slug: "chiffon-beach-cover-up-dress",
-      price: 39.99,
-      imageFileName: "dresses.jpg",
-    },
-    {
-      id: 10,
-      name: "Glamorous Sequin Evening Gown",
-      slug: "glamorous-sequin-evening-gown",
-      price: 179.99,
-      imageFileName: "dresses.jpg",
-    },
-    {
-      id: 11,
-      name: "Bohemian Embroidered Maxi Dress",
-      slug: "bohemian-embroidered-maxi-dress",
-      price: 99.99,
-      imageFileName: "dresses.jpg",
-    },
-    {
-      id: 12,
-      name: "Floral Print Wrap Dress",
-      slug: "floral-print-wrap-dress",
-      price: 69.99,
-      imageFileName: "dresses.jpg",
-    },
-  ];
+  const getProducts = async () => {
+    await get(`product/category/${childCategory}`)
+      .then((res) => {
+        setProducts(res.data.result.products);
+        setCategory(res.data.result.category);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    getProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [childCategory]);
 
   return (
     <Box sx={{ mb: 4 }}>
-      <Typography variant="h1">Dresses</Typography>
+      <Typography variant="h1">{category.name}</Typography>
       <Grid container spacing={3} sx={{ mt: 1 }}>
         {products.map((item, i) => {
           return (
@@ -123,7 +57,7 @@ function Products() {
               >
                 <Box
                   component="img"
-                  src={require(`../assets/images/uploads/${item.imageFileName}`)}
+                  src={`${UPLOAD_BASE_URL}${item.image}`}
                   alt={item.name}
                   sx={{
                     width: "100%",
@@ -174,6 +108,9 @@ function Products() {
           );
         })}
       </Grid>
+      {!products.length && (
+        <Typography sx={{ mt: 3 }}>No products available...</Typography>
+      )}
     </Box>
   );
 }

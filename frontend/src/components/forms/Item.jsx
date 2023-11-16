@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import { ItemSchema } from "../../schemas";
 import InputText from "../form-controls/InputText";
+import InputFile from "../form-controls/InputFile";
 import InputAutoComplete from "../form-controls/InputAutoComplete";
-import { Button } from "@mui/material";
+import { Button, Grid, Stack, Box } from "@mui/material";
 import { useAuthContext } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import useHttpRequest from "../../hooks/useHttpRequest";
+const UPLOAD_BASE_URL = process.env.REACT_APP_UPLOAD_BASE_URL;
 
 function Item() {
   const navigate = useNavigate();
@@ -14,7 +16,7 @@ function Item() {
   const { get, post } = useHttpRequest();
   const [categories, setCategories] = useState([]);
   const { id } = useParams();
-  // const action = id ? "update" : "add";
+  const action = id ? "update" : "add";
   const [initialValues, setInitialValues] = useState({
     category: "",
     category_value: "",
@@ -25,7 +27,7 @@ function Item() {
     size: "",
     description: "",
     price: "",
-    image: [],
+    image: "",
     vendor: user._id,
   });
 
@@ -59,11 +61,11 @@ function Item() {
     await get(`product/${id}`)
       .then((res) => {
         const result = res.data.result;
-        console.log(result);
+
         setInitialValues({
           ...initialValues,
-          category: result.category,
-          category_value: result.category,
+          category: getLabelByValue(result.category._id),
+          category_value: result.category._id,
           name: result.name,
           condition: result.attributes.condition,
           condition_value: result.attributes.condition,
@@ -71,6 +73,7 @@ function Item() {
           size: result.attributes.size,
           description: result.description,
           price: result.price,
+          image: result.image,
         });
       })
       .catch((e) => {
@@ -78,11 +81,16 @@ function Item() {
       });
   };
 
+  const getLabelByValue = (value) => {
+    const category = categories.find((category) => category.value === value);
+    return category ? category.label : null;
+  };
+
   useEffect(() => {
     getCategories();
-    if (id) getProduct();
+    if (action === "update") getProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [categories]);
 
   return (
     <>
@@ -91,7 +99,17 @@ function Item() {
         enableReinitialize
         validationSchema={ItemSchema}
         onSubmit={async (values, actions) => {
-          await post("product/create", values, actions)
+          const formData = new FormData();
+
+          for (const data in values) {
+            formData.append(data, values[data]);
+          }
+
+          await post(
+            action === "update" ? `product/update/${id}` : "product/create",
+            formData,
+            actions
+          )
             .then((res) => {
               navigate("/my-account/my-items");
             })
@@ -102,42 +120,106 @@ function Item() {
       >
         {(props) => (
           <Form>
-            <InputAutoComplete
-              freeSolo
-              label="Category"
-              options={categories}
-              name="category"
-              size="small"
-              formikProps={props}
-            />
-            <InputText label="Name" name="name" size="small" />
-            <InputAutoComplete
-              freeSolo
-              label="Condition"
-              options={[
-                { value: "Used", label: "Used" },
-                { value: "New", label: "New" },
-              ]}
-              name="condition"
-              size="small"
-              formikProps={props}
-            />
-            <InputText label="Color" name="color" size="small" />
-            <InputText label="Size" name="size" size="small" />
-            <InputText label="Description" name="description" size="small" />
-            <InputText label="Price" name="price" size="small" />
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <InputAutoComplete
+                  freeSolo
+                  label="Category"
+                  options={categories}
+                  name="category"
+                  size="small"
+                  formikProps={props}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <InputText
+                  label="Name"
+                  name="name"
+                  size="small"
+                  sx={{ mt: 0 }}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <InputAutoComplete
+                  freeSolo
+                  label="Condition"
+                  options={[
+                    { value: "Used", label: "Used" },
+                    { value: "New", label: "New" },
+                  ]}
+                  name="condition"
+                  size="small"
+                  formikProps={props}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <InputText
+                  label="Color"
+                  name="color"
+                  size="small"
+                  sx={{ mt: 0 }}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <InputText
+                  label="Size"
+                  name="size"
+                  size="small"
+                  sx={{ mt: 0 }}
+                />
+              </Grid>
+              <Grid item md={12}>
+                <InputText
+                  label="Description"
+                  name="description"
+                  size="small"
+                  sx={{ mt: 0 }}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <InputText
+                  label="Price"
+                  name="price"
+                  size="small"
+                  sx={{ mt: 0 }}
+                />
+              </Grid>
+              <Grid item md={12}>
+                <InputFile
+                  name="image"
+                  size="small"
+                  formikProps={props}
+                  sx={{ mt: 0 }}
+                />
+                {initialValues.image && (
+                  <Box
+                    component="img"
+                    src={`${UPLOAD_BASE_URL}${initialValues.image}`}
+                    sx={{
+                      mt: 1,
+                      maxWidth: "300px",
+                      width: "100%",
+                      objectFit: "contain",
+                      borderRadius: "0.25rem",
+                      border: "1px solid",
+                    }}
+                  />
+                )}
+              </Grid>
+            </Grid>
 
-            <Button
-              fullWidth
-              color="primary"
-              variant="contained"
-              type="submit"
-              size="large"
-              sx={{ mt: 4, mx: "auto", display: "block" }}
-              disabled={props.isSubmitting}
-            >
-              Save
-            </Button>
+            <Stack sx={{ mt: 4 }} direction="row" justifyContent="end">
+              <Button
+                color="primary"
+                variant="contained"
+                type="submit"
+                size="large"
+                disabled={props.isSubmitting}
+                sx={{ minWidth: "200px" }}
+              >
+                Save
+              </Button>
+            </Stack>
           </Form>
         )}
       </Formik>

@@ -6,6 +6,9 @@ import {
   Chip,
   alpha,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
@@ -15,19 +18,33 @@ import useHttpRequest from "../hooks/useHttpRequest";
 
 function MyItems() {
   const { user } = useAuthContext();
-  const { get } = useHttpRequest();
+  const { get, remove } = useHttpRequest();
   const [myItems, setMyItems] = useState([]);
+  const [dialogOpen, setdialogOpen] = useState(false);
+  const [deletingItem, setDeletingItem] = useState("");
+
+  const deleteItem = async (id) => {
+    await remove(`product/${id}`)
+      .then((res) => {
+        setdialogOpen(false);
+        getMyItems();
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
+  };
+
+  const getMyItems = async () => {
+    await get(`product/vendor/${user._id}`)
+      .then((res) => {
+        setMyItems(res.data.result);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
+  };
 
   useEffect(() => {
-    const getMyItems = async () => {
-      await get(`product/vendor/${user._id}`)
-        .then((res) => {
-          setMyItems(res.data.result);
-        })
-        .catch((e) => {
-          // console.log(e);
-        });
-    };
     getMyItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -111,6 +128,11 @@ function MyItems() {
                       color: (theme) =>
                         alpha(theme.palette.secondary.main, 0.5),
                     }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setdialogOpen(true);
+                      setDeletingItem(item._id);
+                    }}
                   >
                     Delete
                   </Button>
@@ -123,6 +145,38 @@ function MyItems() {
           <Typography>You haven't posted any items...</Typography>
         )}
       </Stack>
+
+      <Dialog open={dialogOpen} onClose={() => setdialogOpen(false)} fullWidth>
+        <DialogTitle variant="h3" align="center" sx={{ pt: 5 }}>
+          Are you sure?
+        </DialogTitle>
+        <DialogContent align="center" sx={{ pb: 5 }}>
+          <Typography sx={{ maxWidth: "80%" }}>
+            Are you sure you want to delete this item? The item will be
+            permanently deleted.
+          </Typography>
+          <Stack direction="row" justifyContent="center" sx={{ mt: 4 }}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: (theme) =>
+                  alpha(theme.palette.secondary.main, 0.2),
+              }}
+              onClick={() => setdialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              color="error"
+              variant="contained"
+              sx={{ ml: 1 }}
+              onClick={() => deleteItem(deletingItem)}
+            >
+              Delete
+            </Button>
+          </Stack>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

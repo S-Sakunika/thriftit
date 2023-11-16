@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 function CategoryCarousel(props) {
   const items = props.items;
+
   const categoryImage = (image) => {
     try {
       return require(`../assets/images/categories/${image}`);

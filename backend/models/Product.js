@@ -36,6 +36,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    image: {
+        type: mongoose.Schema.Types.Mixed,
+        required: true,
+    },
     vendor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Users',
@@ -45,6 +49,13 @@ const productSchema = new mongoose.Schema({
         type: Number,
         trim: true,
         required: true,
+    },    
+    slug: {
+        type: String,
+        trim: true,
+        required: true,
+        lowercase: true,
+        unique: true
     },
     createdAt: {
         type: Date,

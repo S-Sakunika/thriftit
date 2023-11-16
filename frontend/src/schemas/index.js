@@ -22,6 +22,7 @@ const ItemSchema = Yup.object().shape({
     name: Yup.string().required("Name required"),
     condition: Yup.string().required("Condition required"),
     price: Yup.number().positive("Must be more than 0").required("Price required"),
+    image: Yup.string().required("Image required"),
 });
 
 const CheckoutSchema = Yup.object().shape({

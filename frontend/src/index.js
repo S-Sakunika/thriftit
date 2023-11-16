@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom'
 import { NotificationProvider } from './context/NotificationContext'
 import { AuthProvider } from './context/AuthContext'
+import { AppProvider } from './context/AppContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,7 +13,9 @@ root.render(
     <BrowserRouter>    
       <NotificationProvider>
         <AuthProvider>
+          <AppProvider>
             <App />
+          </AppProvider>
         </AuthProvider>      
       </NotificationProvider>
     </BrowserRouter>

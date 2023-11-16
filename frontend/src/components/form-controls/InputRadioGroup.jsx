@@ -11,7 +11,7 @@ function InputRadioGroup({ formikProps, options, ...props }) {
         {...field}
         value={formikProps.values[field.name]}
         onChange={(event) => {
-          formikProps.setFieldValue("role", event.currentTarget.value);
+          formikProps.setFieldValue(field.name, event.currentTarget.value);
         }}
       >
         {Object.entries(options).map(([key, value], i) => {

@@ -1,29 +1,11 @@
-import { Grid, Box, Typography, Button } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Grid, Box, Typography, Button, Stack, Chip } from "@mui/material";
 import { FiShoppingCart } from "react-icons/fi";
 import AnimatedText from "../components/AnimatedText";
 import ProductCarousel from "../components/ProductCarousel";
-
-const product = {
-  name: "Vintage lace wedding dress",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-  attributes: [
-    {
-      label: "Condition",
-      value: "Used",
-    },
-    {
-      label: "Color",
-      value: "Black",
-    },
-    {
-      label: "Size",
-      value: "M",
-    },
-  ],
-  images: ["dresses.jpg", "jackets.jpg", "tops.jpg"],
-};
+import { useParams } from "react-router-dom";
+import useHttpRequest from "../hooks/useHttpRequest";
+const UPLOAD_BASE_URL = process.env.REACT_APP_UPLOAD_BASE_URL;
 
 const relatedProducts = [
   {
@@ -78,39 +60,54 @@ const relatedProducts = [
 ];
 
 function ProductSingle() {
-  const [mainImg, setMainImage] = useState(product.images[0]);
+  const { product } = useParams();
+  const { get } = useHttpRequest();
+  const [productData, setProductData] = useState({});
+  const [mainImg, setMainImage] = useState("");
+
+  const getProductData = async () => {
+    await get(`product/slug/${product}`)
+      .then((res) => {
+        setProductData(res.data.result);
+        setMainImage(res.data.result.image);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    getProductData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product]);
+
   return (
     <Box sx={{ my: 4 }}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={3}>
-              {product.images.map((img, i) => {
-                return (
-                  <Box
-                    key={i}
-                    component="img"
-                    src={require(`../assets/images/uploads/${img}`)}
-                    sx={{
-                      width: "100%",
-                      objectFit: "contain",
-                      borderRadius: "1rem",
-                      mb: 1,
-                      "&:hover": {
-                        cursor: "pointer",
-                      },
-                    }}
-                    onClick={() => {
-                      setMainImage(img);
-                    }}
-                  />
-                );
-              })}
+              <Box
+                component="img"
+                src={`${UPLOAD_BASE_URL}${mainImg}`}
+                sx={{
+                  width: "100%",
+                  objectFit: "contain",
+                  borderRadius: "1rem",
+                  mb: 1,
+                  "&:hover": {
+                    cursor: "pointer",
+                  },
+                }}
+                onClick={() => {
+                  setMainImage(mainImg);
+                }}
+              />
             </Grid>
             <Grid item xs={12} md={9}>
               <Box
                 component="img"
-                src={require(`../assets/images/uploads/${mainImg}`)}
+                src={`${UPLOAD_BASE_URL}${mainImg}`}
                 sx={{
                   width: "100%",
                   objectFit: "contain",
@@ -122,33 +119,46 @@ function ProductSingle() {
         </Grid>
         <Grid item xs={12} md={6}>
           <Box sx={{ pl: 4 }}>
-            <Typography component="h1" variant="h4">
-              {product.name}
-            </Typography>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography component="h1" variant="h4">
+                {productData.name && productData.name}
+              </Typography>
+              {productData.vendor && (
+                <Chip
+                  label={`Vendor: ${productData.vendor.firstName}`}
+                  size="small"
+                />
+              )}
+            </Stack>
             <Typography variant="body1" sx={{ mt: 3 }}>
-              {product.description}
+              {productData.description}
             </Typography>
             <Box sx={{ mt: 2 }}>
               <Grid container spacing={3}>
-                {product.attributes.map((attr, i) => {
-                  return (
-                    <Grid item xs={12} md={4} key={i}>
-                      <Typography
-                        variant="body1"
-                        sx={{ fontWeight: 600 }}
-                        color="primary"
-                      >
-                        {attr.label}
-                      </Typography>
-                      <Typography variant="body1">{attr.value}</Typography>
-                    </Grid>
-                  );
-                })}
+                {productData.attributes &&
+                  Object.entries(productData.attributes)
+                    .filter(([label, value]) => value !== "")
+                    .map(([label, value], i) => {
+                      return (
+                        <Grid item xs={12} md={4} key={i}>
+                          <Typography
+                            variant="body1"
+                            sx={{ fontWeight: 600 }}
+                            color="primary"
+                          >
+                            {`${label.charAt(0).toUpperCase()}${label.slice(
+                              1
+                            )}`}
+                          </Typography>
+                          <Typography variant="body1">{value}</Typography>
+                        </Grid>
+                      );
+                    })}
               </Grid>
             </Box>
             <Box sx={{ mt: 6, display: "flex", alignItems: "center" }}>
               <Typography component="p" variant="h5">
-                $19.99
+                {productData.price && `$${productData.price}`}
               </Typography>
               <Button
                 variant="contained"
