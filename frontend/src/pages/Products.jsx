@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Grid, Typography, Box, Button } from "@mui/material";
+import { Grid, Typography, Box, Button, alpha } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import { FiShoppingCart } from "react-icons/fi";
 import useHttpRequest from "../hooks/useHttpRequest";
+import { useCartContext } from "../context/CartContext";
 const UPLOAD_BASE_URL = process.env.REACT_APP_UPLOAD_BASE_URL;
 
 function Products() {
@@ -10,6 +11,7 @@ function Products() {
   const { get } = useHttpRequest();
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState({});
+  const { addToCart, inCart } = useCartContext();
 
   const getProducts = async () => {
     await get(`product/category/${childCategory}`)
@@ -46,8 +48,15 @@ function Products() {
                       width: "100%",
                       minWidth: "inherit",
                       textIndent: "0",
-                      backgroundColor: (theme) => theme.palette.primary.main,
-                      color: (theme) => theme.palette.white.main,
+                      "&:not(.Mui-disabled)": {
+                        backgroundColor: (theme) => theme.palette.primary.main,
+                        color: (theme) => theme.palette.white.main,
+                      },
+                      "&.Mui-disabled": {
+                        backgroundColor: (theme) =>
+                          alpha(theme.palette.secondary.main, 0.3),
+                        color: (theme) => theme.palette.white.main,
+                      },
                       "& span": {
                         transform: "translateX(0)",
                       },
@@ -57,7 +66,7 @@ function Products() {
               >
                 <Box
                   component="img"
-                  src={`${UPLOAD_BASE_URL}${item.image}`}
+                  src={`${UPLOAD_BASE_URL}${item.image.filename}`}
                   alt={item.name}
                   sx={{
                     width: "100%",
@@ -96,7 +105,17 @@ function Products() {
                           "& span": {
                             transform: "translateX(calc(100% + 30px))",
                           },
+                          "&.Mui-disabled": {
+                            backgroundColor: (theme) =>
+                              theme.palette.primary.main,
+                            color: (theme) => theme.palette.white.main,
+                          },
                         }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          addToCart(item);
+                        }}
+                        disabled={inCart(item._id)}
                       >
                         Add to cart
                       </Button>

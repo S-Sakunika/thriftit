@@ -4,7 +4,6 @@ const { slugify, isUniqueSlug, generateUniqueSlug } = require('../../utils/slugH
 
 const create = async (req, res) => {
     try {
-
         const { name } = req.body;
 
         let slug = slugify(name);
@@ -25,7 +24,7 @@ const create = async (req, res) => {
             price: req.body.price,
             description: req.body.description,
             vendor: req.body.vendor,
-            image: req.file.filename,
+            image: req.file,
             qty: '1',
             slug: slug
         }

@@ -44,7 +44,7 @@ function ProductCarousel(props) {
             <Box className="splide__slide__container">
               <Box
                 component="img"
-                src={require(`../assets/images/uploads/${item.imageFileName}`)}
+                src={require(`../assets/images/placeholder.jpg`)}
                 alt={item.name}
               />
             </Box>

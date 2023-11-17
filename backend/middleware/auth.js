@@ -22,8 +22,18 @@ const authenticate = async (req, res, next) => {
         req.user = user;
         next()
     } catch (e) {
-        return res.status(403).json({ message: 'Invalid token' })
+        return res.status(401).json({ message: 'Invalid token' })
     }
 }
 
-module.exports = { authenticate }
+const authorize = (role) => {
+    return (req, res, next) => {
+        if (req.user && req.user.role === role) {
+            next();
+        } else {
+            res.status(403).json({ message: 'Access denied' });
+        }
+    }
+}
+
+module.exports = { authenticate, authorize }

@@ -15,6 +15,7 @@ import { FiTrash2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import useHttpRequest from "../hooks/useHttpRequest";
+const UPLOAD_BASE_URL = process.env.REACT_APP_UPLOAD_BASE_URL;
 
 function MyItems() {
   const { user } = useAuthContext();
@@ -83,7 +84,7 @@ function MyItems() {
                 <Grid item xs={12} md={2}>
                   <Box
                     component="img"
-                    src={require("../assets/images/placeholder.jpg")}
+                    src={`${UPLOAD_BASE_URL}${item.image.filename}`}
                     alt={item.name}
                     sx={{
                       width: "100%",
@@ -97,7 +98,9 @@ function MyItems() {
                   <Typography>{`$${item.price}`}</Typography>
                 </Grid>
                 <Grid item xs={12} md={3} sx={{ alignSelf: "center" }}>
-                  <Typography align="right">{item.createdAt}</Typography>
+                  <Typography align="center">
+                    {item.createdAt.split("T")[0]}
+                  </Typography>
                 </Grid>
                 <Grid
                   item

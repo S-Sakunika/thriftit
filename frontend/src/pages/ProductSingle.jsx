@@ -1,75 +1,78 @@
 import { useState, useEffect } from "react";
 import { Grid, Box, Typography, Button, Stack, Chip } from "@mui/material";
 import { FiShoppingCart } from "react-icons/fi";
-import AnimatedText from "../components/AnimatedText";
-import ProductCarousel from "../components/ProductCarousel";
 import { useParams } from "react-router-dom";
 import useHttpRequest from "../hooks/useHttpRequest";
+import { useCartContext } from "../context/CartContext";
 const UPLOAD_BASE_URL = process.env.REACT_APP_UPLOAD_BASE_URL;
 
-const relatedProducts = [
-  {
-    id: 1,
-    name: "Elegant Black Evening Dress",
-    slug: "elegant-black-evening-dress",
-    price: 129.99,
-    imageFileName: "dresses.jpg",
-  },
-  {
-    id: 2,
-    name: "Summer Floral Maxi Dress",
-    slug: "summer-floral-maxi-dress",
-    price: 79.99,
-    imageFileName: "dresses.jpg",
-  },
-  {
-    id: 3,
-    name: "Vintage Lace Wedding Dress",
-    slug: "vintage-lace-wedding-dress",
-    price: 199.99,
-    imageFileName: "dresses.jpg",
-  },
-  {
-    id: 4,
-    name: "Casual Striped Shirt Dress",
-    slug: "casual-striped-shirt-dress",
-    price: 59.99,
-    imageFileName: "dresses.jpg",
-  },
-  {
-    id: 5,
-    name: "Boho Chic Sundress",
-    slug: "boho-chic-sundress",
-    price: 49.99,
-    imageFileName: "dresses.jpg",
-  },
-  {
-    id: 6,
-    name: "Formal Red Cocktail Dress",
-    slug: "formal-red-cocktail-dress",
-    price: 149.99,
-    imageFileName: "dresses.jpg",
-  },
-  {
-    id: 7,
-    name: "Classic Little Black Dress",
-    slug: "classic-little-black-dress",
-    price: 89.99,
-    imageFileName: "dresses.jpg",
-  },
-];
+// import AnimatedText from "../components/AnimatedText";
+// import ProductCarousel from "../components/ProductCarousel";
+
+// const relatedProducts = [
+//   {
+//     id: 1,
+//     name: "Elegant Black Evening Dress",
+//     slug: "elegant-black-evening-dress",
+//     price: 129.99,
+//     imageFileName: "dresses.jpg",
+//   },
+//   {
+//     id: 2,
+//     name: "Summer Floral Maxi Dress",
+//     slug: "summer-floral-maxi-dress",
+//     price: 79.99,
+//     imageFileName: "dresses.jpg",
+//   },
+//   {
+//     id: 3,
+//     name: "Vintage Lace Wedding Dress",
+//     slug: "vintage-lace-wedding-dress",
+//     price: 199.99,
+//     imageFileName: "dresses.jpg",
+//   },
+//   {
+//     id: 4,
+//     name: "Casual Striped Shirt Dress",
+//     slug: "casual-striped-shirt-dress",
+//     price: 59.99,
+//     imageFileName: "dresses.jpg",
+//   },
+//   {
+//     id: 5,
+//     name: "Boho Chic Sundress",
+//     slug: "boho-chic-sundress",
+//     price: 49.99,
+//     imageFileName: "dresses.jpg",
+//   },
+//   {
+//     id: 6,
+//     name: "Formal Red Cocktail Dress",
+//     slug: "formal-red-cocktail-dress",
+//     price: 149.99,
+//     imageFileName: "dresses.jpg",
+//   },
+//   {
+//     id: 7,
+//     name: "Classic Little Black Dress",
+//     slug: "classic-little-black-dress",
+//     price: 89.99,
+//     imageFileName: "dresses.jpg",
+//   },
+// ];
 
 function ProductSingle() {
   const { product } = useParams();
   const { get } = useHttpRequest();
   const [productData, setProductData] = useState({});
   const [mainImg, setMainImage] = useState("");
+  const { addToCart, inCart } = useCartContext();
 
   const getProductData = async () => {
     await get(`product/slug/${product}`)
       .then((res) => {
         setProductData(res.data.result);
-        setMainImage(res.data.result.image);
+        setMainImage(res.data.result.image.filename);
       })
       .catch((e) => {
         // console.log(e);
@@ -164,15 +167,20 @@ function ProductSingle() {
                 variant="contained"
                 startIcon={<FiShoppingCart size={14} />}
                 sx={{ ml: 2 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  addToCart(productData);
+                }}
+                disabled={inCart(productData._id)}
               >
-                Add to cart
+                {inCart(productData._id) ? "Added to cart" : "Add to cart"}
               </Button>
             </Box>
           </Box>
         </Grid>
       </Grid>
 
-      <Box sx={{ mt: 6 }}>
+      {/* <Box sx={{ mt: 6 }}>
         <Typography component="h2" variant="h5" sx={{ mb: 3 }}>
           <AnimatedText
             text="Related"
@@ -182,7 +190,7 @@ function ProductSingle() {
           <Box component="span"> Products</Box>
         </Typography>
         <ProductCarousel items={relatedProducts} />
-      </Box>
+      </Box> */}
     </Box>
   );
 }

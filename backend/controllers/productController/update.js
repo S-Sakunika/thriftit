@@ -4,14 +4,19 @@ const { slugify, isUniqueSlug, generateUniqueSlug } = require('../../utils/slugH
 
 const update = async (req, res) => {
     try {
+
         const id = req.params.id
         const { name } = req.body;
 
         let slug = slugify(name);
-        const isUnique = await isUniqueSlug(slug);
+        const currrentSlug = await Product.findById(id, 'slug -_id');
 
-        if (!isUnique) {
-            slug = await generateUniqueSlug(name);
+        if(slug !== currrentSlug.slug) {
+            const isUnique = await isUniqueSlug(slug);
+
+            if (!isUnique) {
+                slug = await generateUniqueSlug(name);
+            }
         }
 
         const productData = {
@@ -24,7 +29,7 @@ const update = async (req, res) => {
             },
             price: req.body.price,
             description: req.body.description,
-            image: req.file.filename,
+            image: req.file,
             slug: slug
         }
 

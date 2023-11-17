@@ -4,9 +4,12 @@ import IconLink from "./IconLink";
 import Logo from "../assets/images/logo.png";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
+import { useCartContext } from "../context/CartContext";
 
 function Header() {
   const { isLoggedIn } = useAuthContext();
+  const { cartItems } = useCartContext();
+
   return (
     <AppBar position="fixed" color="white" sx={{ py: 1, boxShadow: "none" }}>
       <Container>
@@ -52,7 +55,7 @@ function Header() {
                   to={isLoggedIn ? "/my-account/profile" : "/login"}
                 />
                 <Badge
-                  badgeContent={3}
+                  badgeContent={cartItems.length}
                   color="primary"
                   anchorOrigin={{
                     vertical: "top",

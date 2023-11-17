@@ -95,7 +95,7 @@ function Home() {
                 variant="contained"
                 sx={{ mt: 2 }}
                 component={Link}
-                to="/"
+                to="/category/womens/dresses"
               >
                 Shop Now
               </Button>
@@ -193,7 +193,7 @@ function Home() {
                   variant="contained"
                   sx={{ mt: 4 }}
                   component={Link}
-                  to="/"
+                  to="/register"
                 >
                   Register Now
                 </Button>

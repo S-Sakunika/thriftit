@@ -16,7 +16,6 @@ function InputFile({ formikProps, ...props }) {
         {...props}
         value={undefined}
         onChange={(event) => {
-          console.log(event.target.files);
           formikProps.setFieldValue(field.name, event.target.files[0]);
         }}
         error={isInvalid}

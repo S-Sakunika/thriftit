@@ -1,22 +1,12 @@
 import { Grid, Stack, Box, Typography, Button, alpha } from "@mui/material";
 import { FiTrash2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { useCartContext } from "../context/CartContext";
+const UPLOAD_BASE_URL = process.env.REACT_APP_UPLOAD_BASE_URL;
 
 function Cart() {
-  const cartItems = [
-    {
-      name: "Some name",
-      imageFileName: "dresses.jpg",
-      price: "199.99",
-      vendor: "Vendor name",
-    },
-    {
-      name: "Some name two",
-      imageFileName: "dresses.jpg",
-      price: "58.99",
-      vendor: "Vendor name",
-    },
-  ];
+  const { cartItems, deleteFromCart, cartTotal } = useCartContext();
+
   return (
     <Box sx={{ width: "50vw", mx: "auto" }}>
       <Stack spacing={2}>
@@ -36,7 +26,7 @@ function Cart() {
                 <Grid item xs={12} md={2}>
                   <Box
                     component="img"
-                    src={require(`../assets/images/uploads/${item.imageFileName}`)}
+                    src={`${UPLOAD_BASE_URL}${item.image}`}
                     alt={item.name}
                     sx={{
                       width: "100%",
@@ -48,7 +38,7 @@ function Cart() {
                 <Grid item xs={12} md={4} sx={{ alignSelf: "center" }}>
                   <Typography sx={{ fontWeight: 600 }}>{item.name}</Typography>
                   <Typography sx={{ fontSize: "0.9em" }}>
-                    {item.vendor}
+                    {/* {item.vendor} */}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} md={3} sx={{ alignSelf: "center" }}>
@@ -69,6 +59,7 @@ function Cart() {
                       color: (theme) =>
                         alpha(theme.palette.secondary.main, 0.5),
                     }}
+                    onClick={() => deleteFromCart(item.id)}
                   >
                     Delete
                   </Button>
@@ -89,7 +80,7 @@ function Cart() {
         <Box>
           <Typography>Total</Typography>
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            $289.96
+            {`$${cartTotal()}`}
           </Typography>
         </Box>
         <Stack direction="row">

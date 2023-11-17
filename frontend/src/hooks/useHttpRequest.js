@@ -73,11 +73,13 @@ const useHttpRequest = () => {
 }
 
 const handleError = (e, navigate, redirectToLogin = true) => {
-  if(e.response && e.response.status === 403) {
+  if(e.response && e.response.status === 401) { // Authentication failed
     localStorage.removeItem('auth_token') 
     localStorage.removeItem('user') 
     if(redirectToLogin) navigate('/login')
-  } 
+  } else if(e.response && e.response.status === 403) { // Authorization failed
+    navigate('/')
+  }
   return e
 }
 
