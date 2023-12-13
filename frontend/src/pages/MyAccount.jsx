@@ -17,10 +17,12 @@ import {
 } from "react-icons/fi";
 import UserAccountPage from "./UserAccountPage";
 import { useAuthContext } from "../context/AuthContext";
+import { useCartContext } from "../context/CartContext";
 
 function MyAccount() {
   const { pathname } = useLocation();
   const { user, logout } = useAuthContext();
+  const { setCartItems } = useCartContext();
 
   const IconListItemButton = (props) => (
     <ListItemButton
@@ -112,7 +114,12 @@ function MyAccount() {
                 </IconListItemButton>
               );
             })}
-            <IconListItemButton onClick={logout}>
+            <IconListItemButton
+              onClick={() => {
+                logout();
+                setCartItems([]);
+              }}
+            >
               <Icon>
                 <FiLogOut />
               </Icon>

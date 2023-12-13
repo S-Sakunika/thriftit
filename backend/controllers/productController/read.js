@@ -6,7 +6,7 @@ const getProductsByVendor = async (req, res) => {
     try {
         const vendor = req.params.vendor;
 
-        const products = await Product.find({vendor: vendor, removed: false})
+        const products = await Product.find({vendor: vendor, removed: false}).sort({ createdAt: -1 }).exec();
         res.status(200).json({
             status: 'success',
             result: products,
